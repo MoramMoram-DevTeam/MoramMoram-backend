@@ -90,6 +90,14 @@ public class FleamarketService {
             return new ResponseEntity<>(FLEAMARKET_LIKE_TRUE, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Like>> like_list() {
+        Long user_id = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                        .orElseThrow(
+                                NullPointerException::new
+                ).getId();
+        return new ResponseEntity<>(likeRepository.findByUserId(user_id),HttpStatus.OK);
+    }
+
     public ResponseEntity<List<Fleamarket>> searchpage(String m_name) {
         log.info(m_name);
         return new ResponseEntity<>(fleamarketRepository.findByMarketNameContaining(m_name), HttpStatus.OK);
@@ -153,4 +161,5 @@ public class FleamarketService {
         hostPostRepository.deleteById(m_id);
         return new ResponseEntity<>(HOST_POST_DELETE_TRUE,HttpStatus.OK);
     }
+
 }
